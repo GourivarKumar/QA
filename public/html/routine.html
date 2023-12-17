@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="#" type="image/x-icon" />
+    <title>Question App</title>
+  </head>
+  <body>
+    <ul id="mainUL">
+      <li>
+        <h1 id="mainH1"><a href="../index.html">Questions</a></h1>
+      </li>
+      <li id="tb"><span id="takeBreak"></span></li>
+      <li class="mainLi">
+        <a href="../index.html">Home</a>
+      </li>
+      <li class="mainLi">
+        <span class="pomodoroTimer"></span>
+      </li>
+    </ul>
+    <hr id="mainHr" />
+    <div id="container">
+      <div id="tsidebar">
+        <button id="close-sidebar"></button>
+        <div id="sidebar">
+          <h2>Subjects</h2>
+          <hr />
+          <label class="qsRadio">
+            <input
+              type="radio"
+              name="questionSet"
+              value="normal"
+              checked="true"
+            />
+            Normal Questions <span id="normal"></span>
+          </label>
+          <label class="qsRadio">
+            <input type="radio" name="questionSet" value="journal" /> Journal
+            Questions <span id="journal"></span>
+          </label>
+
+          <!-- Sidebar content goes here -->
+        </div>
+      </div>
+      <div id="mainPage">
+        <h1 id="mainHeading">Questions</h1>
+        <hr />
+        <div id="content">
+          <div id="question-container"></div>
+          <div>
+            <button class="ask-later-button" data-increase-hours="24">
+              Increase Delay
+            </button>
+            <button class="ask-later-button" data-decrease-hours="24">
+              Decrease Delay
+            </button>
+            <button id="next-button">Next Question</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../radioButton.js"></script>
+    <script type="module" src="../script.js"></script>
+    <script type="module" src="../javaScript/pomodoroTimer.js"></script>
+  </body>
+</html>

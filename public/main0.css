@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #3b3f4f;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #e5eaf5;
+}
+
+hr {
+  color: rgba(0, 255, 255, 0.788);
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+h2 {
+  margin-left: 70px;
+  margin-top: 30px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  margin: 5px;
+  padding: 13px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.qOptions li a:hover {
+  color: #2c7c72; /* Change the text color of the link on hover */
+}
+.mainLi a:hover {
+  color: #2c7c72;
+}
+#mainUL {
+  list-style-type: none;
+  margin: 20px 0;
+  padding: 0;
+  /* overflow: hidden; */
+  /* Clear the float to contain child elements */
+}
+#mainUL > #tb {
+  /* float: right; */
+  margin-left: 30%;
+  font-size: xx-large;
+}
+#mainUL h1 {
+  display: inline-block; /* or display: inline-block; depending on your design */
+  /* float: left; */
+  /* margin-right: 12px;  */
+  margin-left: 30px;
+}
+
+#mainUL .mainLi {
+  /* text-align: right; */
+  float: right;
+  margin-top: 10px;
+}
+
+#mainUL li {
+  display: inline-block;
+}
+
+.pomodoroTimer {
+  color: green;
+  cursor: pointer;
+}
+
+.qOptions {
+  margin: 20px;
+  list-style-type: none;
+}
+
+.qOptions li {
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Adjust the radius for round corners */
+  padding: 15px;
+  padding-left: 1px;
+  padding-right: 1px;
+  margin-left: 50px;
+  transition: background-color 0.3s; /* Smooth transition for the hover effect */
+  background-color: #dac3de;
+}
+
+.qOptions li:hover {
+  background-color: whitesmoke; /* Change the background color on hover */
+}
