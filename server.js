@@ -37,8 +37,8 @@ app.post("/questions", (req, res) => {
   const setName = req.body.setName;
   const setTableName = req.body.setTableName;
 
-  console.log(setName);
-  console.log(setTableName);
+  // console.log(setName);
+  // console.log(setTableName);
   // Updated SQL query without the time-based condition
   const query = `SELECT * FROM ${setTableName} WHERE set_name = ?`;
 
