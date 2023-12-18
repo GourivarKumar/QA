@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 // Set the port for the server to run on
-const port = 3000;
+const port = 3010;
 
 // Use bodyParser middleware to parse JSON in request bodies
 app.use(bodyParser.json());
@@ -33,11 +33,14 @@ connection.connect((err) => {
 app.use(express.static("public"));
 
 // Define a route to get questions based on set_name
-app.get("/questions/:set_name", (req, res) => {
-  const setName = req.params.set_name;
+app.post("/questions", (req, res) => {
+  const setName = req.body.setName;
+  const setTableName = req.body.setTableName;
+
   console.log(setName);
+  console.log(setTableName);
   // Updated SQL query without the time-based condition
-  const query = "SELECT * FROM questions WHERE set_name = ?";
+  const query = `SELECT * FROM ${setTableName} WHERE set_name = ?`;
 
   connection.query(query, [setName], (err, results) => {
     if (err) {

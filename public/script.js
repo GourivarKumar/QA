@@ -1,7 +1,9 @@
+// let tableNameHTML = "question";
 document.addEventListener("DOMContentLoaded", function () {
   const questionContainer = document.getElementById("question-container");
   const mainHeadingNow = document.getElementById("mainHeading");
   const nextButton = document.getElementById("next-button");
+  const tableLinks = document.querySelectorAll('a[id^="sqlTable"]');
   const radioButtons = document.getElementsByName("questionSet");
   const increaseButton = document.querySelector("[data-increase-hours]");
   const decreaseButton = document.querySelector("[data-decrease-hours]");
@@ -9,8 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get the radio buttons
   // const normalRadioButton = document.querySelector('input[value="normal"]').closest('label');;
   // const journalRadioButton = document.querySelector('input[value="journal"]').closest('label');;
+  // console.log(tableNameHTML);
 
-  let currentSetName = "normal"; // Default to normal questions
+  let tableNameHTML = localStorage.getItem("tableNameHTML") || "questions";
+  console.log(tableNameHTML);
+
+  let currentSetName = localStorage.getItem("currentSetName"); // Default to normal questions
   if (mainHeadingNow) {
     mainHeadingNow.textContent = "Questions About the " + currentSetName;
   }
@@ -26,12 +32,47 @@ document.addEventListener("DOMContentLoaded", function () {
   let leftTime;
   let tempLeftTime;
 
-  function fetchQuestions(setName) {
-    fetch(`/questions/${setName}`)
+  // if (tableLinks) {
+  tableLinks.forEach((link) => {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      tableNameHTML = this.dataset.value;
+      currentSetName = this.dataset.value1;
+      let htmlFileName = this.href;
+      // console.log(currentSetName);
+      // console.log(tableNameHTML);
+      // // console.log(htmlFileName);
+      // console.log(tableNameHTML);
+      // console.log(tableNameHTML);
+      // console.log(tableNameHTML);
+      saveToLocalStoragex();
+
+      window.location.href = htmlFileName;
+    });
+  });
+  // }
+  function saveToLocalStoragex() {
+    localStorage.setItem("tableNameHTML", tableNameHTML.toString());
+    localStorage.setItem("currentSetName", currentSetName.toString());
+  }
+
+  function fetchQuestions(setName, setTableName) {
+    console.log("++", setTableName);
+    console.log("++", setName);
+    fetch("/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        setName: setName,
+        setTableName: setTableName,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         currentQuestions = data;
-        // console.log(currentQuestions.length);
+        // console.log("****", currentQuestions.length);
         lengthOfArray = currentQuestions.length;
         displayQuestion();
       })
@@ -66,12 +107,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function getRandomQuestion() {
     if (currentQuestions.length === 0) {
-      return {
-        message:
-          "No more questions. Next question will be in " +
-          leftTime +
-          " minutes",
-      };
+      if (leftTime >= 0) {
+        return {
+          message:
+            "No more questions. Next question will be in " +
+            leftTime +
+            " minutes",
+        };
+      } else {
+        return {
+          message: "No more questions.",
+        };
+      }
     }
 
     const randomIndex = Math.floor(Math.random() * currentQuestions.length);
@@ -153,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
     displayQuestion();
 
     if (currentQuestions.length === 0) {
-      fetchQuestions(currentSetName);
+      fetchQuestions(currentSetName, tableNameHTML);
       displayQuestion();
     }
   }
@@ -172,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
     radioButton.addEventListener("change", function () {
       currentSetName = radioButton.value;
       mainHeadingNow.textContent = "Questions About the " + currentSetName;
-      fetchQuestions(currentSetName);
+      fetchQuestions(currentSetName, tableNameHTML);
       displayQuestion(); // Display a new question when switching sets
     });
   });
@@ -268,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial question display based on user progress
   if (nextButton) {
-    fetchQuestions(currentSetName);
+    fetchQuestions(currentSetName, tableNameHTML);
     displayQuestion();
   }
 });
