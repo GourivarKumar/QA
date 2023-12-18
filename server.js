@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 // Set the port for the server to run on
-const port = 3010;
+const port = 3000;
 
 // Use bodyParser middleware to parse JSON in request bodies
 app.use(bodyParser.json());
@@ -33,22 +33,56 @@ connection.connect((err) => {
 app.use(express.static("public"));
 
 // Define a route to get questions based on set_name
+// app.post("/questions", (req, res) => {
+//   const setName = req.body.setName;
+//   const setTableName = req.body.setTableName;
+
+//   console.log(setName);
+//   // console.log(setTableName);
+//   // Updated SQL query without the time-based condition
+//   const query = `SELECT * FROM ${setTableName} WHERE set_name = ?`;
+
+//   connection.query(query, [setName], (err, results) => {
+//     if (err) {
+//       console.error("Error fetching questions:", err);
+//       res.status(500).send("Internal Server Error");
+//       return;
+//     }
+//     console.log(results.length);
+//     res.json(results);
+//   });
+// });
 app.post("/questions", (req, res) => {
   const setName = req.body.setName;
   const setTableName = req.body.setTableName;
 
-  // console.log(setName);
-  // console.log(setTableName);
   // Updated SQL query without the time-based condition
   const query = `SELECT * FROM ${setTableName} WHERE set_name = ?`;
 
   connection.query(query, [setName], (err, results) => {
     if (err) {
-      console.error("Error fetching questions:", err);
-      res.status(500).send("Internal Server Error");
-      return;
+      const createTableQuery = `CREATE TABLE IF NOT EXISTS ${setTableName} (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        set_name VARCHAR(255) NOT NULL,
+        question_text TEXT NOT NULL,
+        delay_hours bigint not null,
+        levelx int not null,
+        levely int not null
+      )`;
+
+      connection.query(createTableQuery, (createTableErr) => {
+        if (createTableErr) {
+          console.error("Error creating table:", createTableErr);
+          res.status(500).json(results);
+        } else {
+          console.log("Table exists or has been created successfully.");
+          // Send the response only after table creation or check
+          // res.json(results);
+        }
+      });
     }
 
+    console.log(results.length);
     res.json(results);
   });
 });
